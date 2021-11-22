@@ -1,0 +1,22 @@
+clear all
+clc
+
+a=uint8(zeros(200,200));
+
+for i=1:200
+    a(i,i)=i;
+    a(i,256-i)=i;
+end
+imshow(a);
+
+for i=1:200;
+    for i=1:200;
+        if a(i,j)>200;
+            b(i,j)=1;
+        else
+            b(i,j)=0;
+        end
+    end
+end
+
+imshow(b);

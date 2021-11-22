@@ -1,0 +1,68 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : MASM_3.ASM
+				;     PROCESSOR : I8086
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+ = 0000				SEG_D	EQU	0000H
+ = 0100				L_D	EQU	0100H
+					;
+ 1000					ORG	1000H
+ 1000  B8 0000				MOV	AX,SEG_D
+ 1003  8E D8				MOV	DS,AX
+					;
+ 1005  BE 2000 R			MOV	SI,OFFSET DATA
+ 1008  B9 0100				MOV	CX,L_D
+ 100B  88 04			L1:	MOV	[SI],AL
+ 100D  46				INC	SI
+ 100E  E2 FB				LOOP	L1
+					;
+ 1010  CC				INT	3
+					;
+ 2000					ORG 	2000H
+ 2000  0100[			DATA	DB	100H	DUP(?)	
+	   ??			
+			 ]	
+				
+					;
+ 2100				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	2100	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+DATA . . . . . . . . . . . . . .  	L BYTE	2000	CODE	Length = 0100
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	100B	CODE
+L_D  . . . . . . . . . . . . . .  	NUMBER	0100	
+
+SEG_D  . . . . . . . . . . . . .  	NUMBER	0000	
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  MASM_3		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     27 Source  Lines
+     27 Total   Lines
+     10 Symbols
+
+  46892 + 388400 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

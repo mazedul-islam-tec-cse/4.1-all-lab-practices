@@ -1,0 +1,202 @@
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:55:4
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : LCD_3.ASM
+				;     PROCESSOR : I8086
+				;     LCD TEST
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+					;
+ = 0540				STACK	EQU	0540H
+					;
+ = 0001				KEY	EQU	01H
+ = 0000				LCDC	EQU	00H
+ = 0002				LCDC_S	EQU	02H
+ = 0004				LCDD	EQU	04H
+					;	
+ 1000					ORG	1000H
+					;
+ 1000  33 C0				XOR	AX,AX
+ 1002  8E D8				MOV	DS,AX
+ 1004  8E D0				MOV	SS,AX
+ 1006  BC 0540				MOV	SP,STACK
+					;
+ 1009  E8 1041 R			CALL	FUNSET
+ 100C  E8 1037 R			CALL	ALLCLR
+					;
+ 100F  BE 1027 R			MOV	SI,OFFSET DATA
+ 1012  E8 105A R			CALL	STRING
+					;
+ 1015  E8 103C R		L1:	CALL	LN2C
+					;
+ 1018  E8 10A2 R			CALL	SCAN
+ 101B  8A 26 10B0 R			MOV	AH,BYTE PTR K_BUF
+ 101F  80 E4 1F				AND	AH,00011111B
+ 1022  E8 106C R			CALL	H_A
+ 1025  EB EE				JMP	L1
+					;
+ 1027  20 20 20 20 20 20	DATA	DB	'       Key Code',00H
+       20 4B 65 79 20 43	
+       6F 64 65 00		
+					;
+					; LCD instruction
+ 1037  B4 01			ALLCLR:	MOV	AH,01H
+ 1039  EB 08 90				JMP	LNXX
+					;
+ 103C  B4 C8			LN2C:   MOV	AH,0C8H
+ 103E  EB 03 90				JMP	LNXX
+					;
+ 1041  B4 0E			FUNSET:	MOV	AH,0EH
+					;
+ 1043  E8 104B R		LNXX:	CALL	BUSY
+ 1046  8A C4				MOV	AL,AH
+ 1048  E6 00				OUT	LCDC,AL
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:55:4
+                                                             Page     1-2
+
+
+ 104A  C3				RET
+					; busy flag check
+ 104B  E4 02			BUSY:	IN	AL,LCDC_S
+ 104D  24 80				AND	AL,10000000B
+ 104F  75 FA				JNZ	BUSY
+ 1051  C3				RET
+					;
+					; 1 char. LCD OUT 
+					; AH = out data
+ 1052				CHAROUT:
+ 1052  E8 104B R			CALL	BUSY
+					;
+ 1055  8A C4				MOV	AL,AH
+ 1057  E6 04				OUT	LCDD,AL
+ 1059  C3				RET
+					;
+ 105A  2E: 8A 24		STRING:	MOV	AH,BYTE PTR CS:[SI]
+ 105D  80 FC 00				CMP	AH,00H
+ 1060  74 09				JE	STRING1
+					; out
+ 1062  E8 104B R			CALL	BUSY
+ 1065  E8 1052 R			CALL	CHAROUT
+ 1068  46				INC	SI
+ 1069  EB EF				JMP	STRING
+ 106B				STRING1:
+ 106B  C3			  	RET
+					;		
+					; 1 byte data LCD out
+					; INPUT DATA AH
+ 106C				H_A     PROC	NEAR
+ 106C  50				PUSH	AX
+ 106D  D0 CC				ROR	AH,1
+ 106F  D0 CC				ROR	AH,1
+ 1071  D0 CC				ROR	AH,1
+ 1073  D0 CC				ROR	AH,1
+ 1075  E8 107D R			CALL	H_A1 ; high digit lcd out
+ 1078  58				POP	AX
+ 1079  E8 107D R			CALL	H_A1 ; low digit lcd out
+ 107C  C3				RET
+ 107D				H_A	ENDP
+					;				
+ 107D				H_A1    PROC	NEAR
+ 107D  53				PUSH	BX
+ 107E  BB 1092 R			MOV	BX,OFFSET ASCTBL
+ 1081  80 E4 0F				AND	AH,0FH
+ 1084  02 DC				ADD	BL,AH
+ 1086  73 02				JNC	H_A2
+ 1088  FE C7				INC	BH
+ 108A  2E: 8A 27		H_A2:	MOV 	AH,CS:[BX]
+ 108D  E8 1052 R			CALL	CHAROUT
+ 1090  5B				POP	BX
+ 1091  C3				RET
+					;
+ 1092  30 31 32 33 34 35	ASCTBL	DB	'0123456789ABCDEF'
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:55:4
+                                                             Page     1-3
+
+
+       36 37 38 39 41 42	
+       43 44 45 46		
+ 10A2				H_A1	ENDP
+					;
+					; key board scan, key code = AL
+ 10A2				SCAN    PROC	NEAR
+ 10A2  E4 01				IN	AL,KEY
+ 10A4  A8 80				TEST	AL,10000000B
+ 10A6  75 FA				JNZ	SCAN
+					;
+ 10A8  24 1F				AND	AL,00011111B
+ 10AA  A2 10B0 R			MOV	BYTE PTR K_BUF,AL
+					; key clear
+ 10AD  E6 01				OUT	KEY,AL
+ 10AF  C3				RET
+ 10B0				SCAN	ENDP
+					;	
+ 10B0  01			K_BUF:	DB	1
+					;
+ 10B1				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:55:4
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	10B1	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+ALLCLR . . . . . . . . . . . . .  	L NEAR	1037	CODE
+ASCTBL . . . . . . . . . . . . .  	L BYTE	1092	CODE
+
+BUSY . . . . . . . . . . . . . .  	L NEAR	104B	CODE
+
+CHAROUT  . . . . . . . . . . . .  	L NEAR	1052	CODE
+
+DATA . . . . . . . . . . . . . .  	L BYTE	1027	CODE
+
+FUNSET . . . . . . . . . . . . .  	L NEAR	1041	CODE
+
+H_A  . . . . . . . . . . . . . .  	N PROC	106C	CODE	Length = 0011
+H_A1 . . . . . . . . . . . . . .  	N PROC	107D	CODE	Length = 0025
+H_A2 . . . . . . . . . . . . . .  	L NEAR	108A	CODE
+
+KEY  . . . . . . . . . . . . . .  	NUMBER	0001	
+K_BUF  . . . . . . . . . . . . .  	L NEAR	10B0	CODE
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	1015	CODE
+LCDC . . . . . . . . . . . . . .  	NUMBER	0000	
+LCDC_S . . . . . . . . . . . . .  	NUMBER	0002	
+LCDD . . . . . . . . . . . . . .  	NUMBER	0004	
+LN2C . . . . . . . . . . . . . .  	L NEAR	103C	CODE
+LNXX . . . . . . . . . . . . . .  	L NEAR	1043	CODE
+
+SCAN . . . . . . . . . . . . . .  	N PROC	10A2	CODE	Length = 000E
+STACK  . . . . . . . . . . . . .  	NUMBER	0540	
+STRING . . . . . . . . . . . . .  	L NEAR	105A	CODE
+STRING1  . . . . . . . . . . . .  	L NEAR	106B	CODE
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  LCD_3		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:55:4
+                                                             Symbols-2
+
+
+
+    125 Source  Lines
+    125 Total   Lines
+     27 Symbols
+
+  47038 + 410350 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

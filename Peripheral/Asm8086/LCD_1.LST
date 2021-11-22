@@ -1,0 +1,157 @@
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:46:2
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : LCD_1.ASM
+				;     PROCESSOR : I8086
+				;     LCD TEST
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+					;
+ = 0540				STACK	EQU	0540H
+					;
+ = 0000				LCDC	EQU	00H
+ = 0002				LCDC_S	EQU	02H
+ = 0004				LCDD	EQU	04H
+					;	
+ 1000					ORG	1000H
+					;
+ 1000  33 C0				XOR	AX,AX
+ 1002  8E D0				MOV	SS,AX
+ 1004  BC 0540				MOV	SP,STACK
+					;
+ 1007  E8 1041 R		L2:	CALL	ALLCLR
+					;
+ 100A  BE 102A R			MOV	SI,OFFSET CUSOR1
+ 100D  E8 1064 R			CALL	STRING
+					;
+ 1010  E8 104B R			CALL	LN21
+ 1013  BE 1030 R			MOV	SI,OFFSET CUSOR2
+ 1016  E8 1064 R			CALL	STRING
+					;
+ 1019  B2 10				MOV	DL,16
+ 101B  E8 1076 R		L1:	CALL	TIMER
+ 101E  E8 1046 R			CALL	SHIFT
+ 1021  E8 1076 R			CALL	TIMER
+ 1024  FE CA				DEC	DL
+ 1026  75 F3				JNZ	L1
+ 1028  EB DD				JMP	L2
+					;
+ 102A  4C 61 62 20 21 00	CUSOR1	DB	'Lab !',00H
+ 1030  4D 44 41 2D 57 69	CUSOR2  DB	'MDA-Win8086 Kit!',00H
+       6E 38 30 38 36 20	
+       4B 69 74 21 00		
+					;
+					; LCD instruction
+ 1041  B4 01			ALLCLR:	MOV	AH,01H
+ 1043  EB 08 90				JMP	LNXX
+					;
+ 1046  B4 1C			SHIFT:	MOV	AH,00011100B
+ 1048  EB 03 90				JMP	LNXX
+					;
+ 104B  B4 C0			LN21:	MOV	AH,0C0H
+					;
+ 104D  E8 1055 R		LNXX:	CALL	BUSY
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:46:2
+                                                             Page     1-2
+
+
+ 1050  8A C4				MOV	AL,AH
+ 1052  E6 00				OUT	LCDC,AL
+ 1054  C3				RET
+					; busy flag check
+ 1055  E4 02			BUSY:	IN	AL,LCDC_S
+ 1057  24 80				AND	AL,10000000B
+ 1059  75 FA				JNZ	BUSY
+ 105B  C3				RET
+					;
+					; 1 char. LCD OUT 
+					; AH = out data
+ 105C				CHAROUT:
+ 105C  E8 1055 R			CALL	BUSY
+					;
+ 105F  8A C4				MOV	AL,AH
+ 1061  E6 04				OUT	LCDD,AL
+ 1063  C3				RET
+					;
+ 1064  2E: 8A 24		STRING:	MOV	AH,BYTE PTR CS:[SI]
+ 1067  80 FC 00				CMP	AH,00H
+ 106A  74 09				JE	STRING1
+					; out
+ 106C  E8 1055 R			CALL	BUSY
+ 106F  E8 105C R			CALL	CHAROUT
+ 1072  46				INC	SI
+ 1073  EB EF				JMP	STRING
+ 1075				STRING1:
+ 1075  C3			  	RET
+					;		
+ 1076  B9 0002			TIMER:	MOV	CX,2
+ 1079  51			TIMER2:	PUSH	CX
+ 107A  B9 0000			       	MOV	CX,0
+ 107D  90			TIMER1:	NOP
+ 107E  90				NOP
+ 107F  90				NOP
+ 1080  90				NOP
+ 1081  E2 FA				LOOP	TIMER1
+ 1083  59				POP	CX
+ 1084  E2 F3				LOOP	TIMER2
+ 1086  C3				RET
+					;
+ 1087				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:46:2
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	1087	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+ALLCLR . . . . . . . . . . . . .  	L NEAR	1041	CODE
+
+BUSY . . . . . . . . . . . . . .  	L NEAR	1055	CODE
+
+CHAROUT  . . . . . . . . . . . .  	L NEAR	105C	CODE
+CUSOR1 . . . . . . . . . . . . .  	L BYTE	102A	CODE
+CUSOR2 . . . . . . . . . . . . .  	L BYTE	1030	CODE
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	101B	CODE
+L2 . . . . . . . . . . . . . . .  	L NEAR	1007	CODE
+LCDC . . . . . . . . . . . . . .  	NUMBER	0000	
+LCDC_S . . . . . . . . . . . . .  	NUMBER	0002	
+LCDD . . . . . . . . . . . . . .  	NUMBER	0004	
+LN21 . . . . . . . . . . . . . .  	L NEAR	104B	CODE
+LNXX . . . . . . . . . . . . . .  	L NEAR	104D	CODE
+
+SHIFT  . . . . . . . . . . . . .  	L NEAR	1046	CODE
+STACK  . . . . . . . . . . . . .  	NUMBER	0540	
+STRING . . . . . . . . . . . . .  	L NEAR	1064	CODE
+STRING1  . . . . . . . . . . . .  	L NEAR	1075	CODE
+
+TIMER  . . . . . . . . . . . . .  	L NEAR	1076	CODE
+TIMER1 . . . . . . . . . . . . .  	L NEAR	107D	CODE
+TIMER2 . . . . . . . . . . . . .  	L NEAR	1079	CODE
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  LCD_1		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     95 Source  Lines
+     95 Total   Lines
+     25 Symbols
+
+  47038 + 410350 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

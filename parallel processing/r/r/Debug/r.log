@@ -1,0 +1,4 @@
+﻿  Source.cpp
+e:\r\r\source.cpp(116): warning C4101: 'status': unreferenced local variable
+  r.vcxproj -> E:\r\Debug\r.exe
+  r.vcxproj -> E:\r\Debug\r.pdb (Full PDB)

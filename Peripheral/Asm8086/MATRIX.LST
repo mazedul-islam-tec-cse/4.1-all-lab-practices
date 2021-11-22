@@ -1,0 +1,86 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : MATRIX.ASM
+				;     PROCESSOR : I8086
+				;     DOT MATRIX TEST
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ = 001E				PPIC_C	EQU	1EH ; control register
+ = 001C				PPIC	EQU	1CH 
+ = 001A				PPIB	EQU	1AH
+ = 0018				PPIA	EQU	18H
+					;	
+ 1000					ORG	1000H
+ 1000  B0 80				MOV	AL,10000000B
+ 1002  E6 1E				OUT	PPIC_C,AL
+					;
+ 1004  B0 FF				MOV	AL,11111111B
+ 1006  E6 1C				OUT	PPIC,AL
+					;
+ 1008  B0 FF				MOV	AL,11111111B
+ 100A  E6 1A				OUT	PPIB,AL
+					;
+ 100C  B0 FE			L1:	MOV	AL,11111110B
+ 100E  E6 18			L2:	OUT	PPIA,AL
+ 1010  E8 101B R			CALL	TIMER
+ 1013  F9				STC
+ 1014  D0 C0				ROL	AL,1
+ 1016  72 F6				JC	L2
+ 1018  EB F2				JMP	L1		
+					;
+ 101A  CC				INT	3
+					;		
+ 101B  B9 FFFF			TIMER:	MOV	CX,0FFFFH
+ 101E  90			TIMER1:	NOP
+ 101F  90				NOP
+ 1020  90				NOP
+ 1021  90				NOP
+ 1022  E2 FA				LOOP	TIMER1
+ 1024  C3				RET
+					;
+ 1025				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	1025	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	100C	CODE
+L2 . . . . . . . . . . . . . . .  	L NEAR	100E	CODE
+
+PPIA . . . . . . . . . . . . . .  	NUMBER	0018	
+PPIB . . . . . . . . . . . . . .  	NUMBER	001A	
+PPIC . . . . . . . . . . . . . .  	NUMBER	001C	
+PPIC_C . . . . . . . . . . . . .  	NUMBER	001E	
+
+TIMER  . . . . . . . . . . . . .  	L NEAR	101B	CODE
+TIMER1 . . . . . . . . . . . . .  	L NEAR	101E	CODE
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  MATRIX		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     44 Source  Lines
+     44 Total   Lines
+     14 Symbols
+
+  46930 + 388362 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

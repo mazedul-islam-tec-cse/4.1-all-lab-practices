@@ -1,0 +1,15 @@
+1. Plot an Image
+2. Plot 4/2 image in a single page
+3. RGB to Gray
+4. Show Image Histogram
+5. Erosion
+6. Dilation
+7. Opening
+8. Closing
+9. Decrease Spatial Resolution
+10. Decrease Intensity Level by one bit
+11. Manual Image Histogram
+12. Power law transformation
+13. Inverse log transformation
+14. Difference between original image and obtain image of last 3 bit (MSB)
+15. Boundary Extraction

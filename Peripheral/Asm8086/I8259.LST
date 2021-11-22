@@ -1,0 +1,121 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : D8259.ASM
+				;     PROCESSOR : I8086
+				;     8259 TEST
+				;     Press IR2 button
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ = 001F				PPIC_C	EQU	1FH
+ = 001D				PPIC	EQU	1DH
+ = 001B				PPIB	EQU	1BH
+ = 0019				PPIA	EQU	19H
+					;	
+ = 0010				INTA	EQU	10H
+ = 0012				INTA2	EQU	INTA+2
+					;
+ 1000					ORG	1000H
+					;
+ 1000  E8 1038 R			CALL	INIT
+					;
+ 1003  B0 80				MOV	AL,10000000B
+ 1005  E6 1F				OUT	PPIC_C,AL
+					;
+ 1007  B0 FF				MOV	AL,11111111B
+ 1009  E6 19				OUT	PPIA,AL
+					;
+ 100B  B0 00				MOV	AL,00000000B
+ 100D  E6 1D				OUT	PPIC,AL
+					;
+ 100F  B4 F1				MOV	AH,11110001B
+ 1011  8A C4				MOV	AL,AH
+ 1013  E6 1B				OUT	PPIB,AL
+					;
+ 1015  B0 0C			L2:	MOV	AL,00001100B
+ 1017  E6 10				OUT	INTA,AL
+ 1019  E4 10				IN	AL,INTA
+ 101B  A8 80				TEST	AL,10000000B
+ 101D  74 F6				JZ	L2
+					;
+ 101F  D0 E4				SHL	AH,1
+ 1021  F6 C4 10				TEST	AH,00010000B
+ 1024  75 06				JNZ	L1
+ 1026  80 CC F0				OR	AH,11110000B
+ 1029  EB 03 90				JMP	L3
+					; LED out
+ 102C  B4 F1			L1:	MOV	AH,11110001B
+ 102E  8A C4			L3:	MOV	AL,AH
+ 1030  E6 1B				OUT	PPIB,AL
+					;  EOI command
+ 1032  B0 20				MOV	AL,00100000B
+ 1034  E6 10				OUT	INTA,AL
+ 1036  EB DD				JMP	L2
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-2
+
+
+					;
+ 1038				INIT	PROC	NEAR
+					; ICW1
+ 1038  B0 13			 	MOV	AL,00010011B
+ 103A  E6 10				OUT	INTA,AL
+					;ICW2 interrupt vector
+ 103C  B0 40				MOV	AL,40H
+ 103E  E6 12				OUT	INTA2,AL
+					;ICW4
+ 1040  B0 01				MOV	AL,00000001B
+ 1042  E6 12				OUT	INTA2,AL
+					;interrupt mask
+ 1044  B0 FB				MOV 	AL,11111011B
+ 1046  E6 12				OUT	INTA2,AL
+ 1048  C3				RET
+ 1049				INIT	ENDP
+					;	
+ 1049				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	1049	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+INIT . . . . . . . . . . . . . .  	N PROC	1038	CODE	Length = 0011
+INTA . . . . . . . . . . . . . .  	NUMBER	0010	
+INTA2  . . . . . . . . . . . . .  	NUMBER	0012	
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	102C	CODE
+L2 . . . . . . . . . . . . . . .  	L NEAR	1015	CODE
+L3 . . . . . . . . . . . . . . .  	L NEAR	102E	CODE
+
+PPIA . . . . . . . . . . . . . .  	NUMBER	0019	
+PPIB . . . . . . . . . . . . . .  	NUMBER	001B	
+PPIC . . . . . . . . . . . . . .  	NUMBER	001D	
+PPIC_C . . . . . . . . . . . . .  	NUMBER	001F	
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  I8259		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     73 Source  Lines
+     73 Total   Lines
+     16 Symbols
+
+  46906 + 386338 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

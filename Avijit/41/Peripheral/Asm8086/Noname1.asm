@@ -1,0 +1,80 @@
+;*****************************************
+;     MDA-Win8086 EXPERIMENT PROGRAM    *
+;     FILENAME  : MATRIX_4.ASM
+;     PROCESSOR : I8086
+;     DOT MATRIX TEST
+;*****************************************
+CODE	SEGMENT
+	ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+	;
+PPIC_C	EQU	1EH ; control register
+PPIC	EQU	1CH ; c port
+PPIB	EQU	1AH
+PPIA	EQU	18H
+	;	
+	ORG	1000H
+	MOV	AL,10000000B
+	OUT	PPIC_C,AL
+	;
+	MOV	AL,11111111B
+	OUT	PPIA,AL
+	;
+L1:	MOV	SI,OFFSET FONT1
+	;
+	MOV	BL,1 ; font No.
+L3:	MOV	BH,30 ; display time
+	;
+L2:	PUSH	SI
+	CALL	SCAN
+	POP	SI
+	DEC	BH
+	JNZ	L2
+	;
+	ADD	SI,8
+	DEC	BL
+	JNZ	L3
+        ;
+	JMP	L1
+	;
+	;	
+	;
+SCAN    PROC	NEAR
+	MOV	AH,00000001B
+SCAN1:	MOV	AL,BYTE PTR CS:[SI]
+	OUT	PPIB,AL
+	;		
+	MOV	AL,AH
+	OUT	PPIC,AL
+	CALL	TIMER
+	INC	SI
+	CLC
+	ROL	AH,1
+	JNC	SCAN1
+	RET
+SCAN	ENDP
+	;
+TIMER:	MOV	CX,300
+TIMER1:	NOP
+	NOP
+	NOP
+	NOP
+	LOOP	TIMER1
+	RET
+	;
+FONT1:  DB      01111111B
+        DB      01111111B
+	DB	01111111B
+	DB	01111111B
+        DB      01111111B
+	DB	01111111B
+        DB      01111111B
+	DB	01111111B
+	;
+
+	
+
+	;
+CODE	ENDS
+	END
+
+		

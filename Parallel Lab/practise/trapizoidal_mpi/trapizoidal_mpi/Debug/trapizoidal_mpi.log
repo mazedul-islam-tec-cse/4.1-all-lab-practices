@@ -1,0 +1,6 @@
+﻿  Source.cpp
+e:\books\final year\odd semester\parallel processing and distrubuted system\practise\trapizoidal_mpi\trapizoidal_mpi\source.cpp(24): warning C4101: 'status': unreferenced local variable
+e:\books\final year\odd semester\parallel processing and distrubuted system\practise\trapizoidal_mpi\trapizoidal_mpi\source.cpp(21): warning C4101: 'source': unreferenced local variable
+e:\books\final year\odd semester\parallel processing and distrubuted system\practise\trapizoidal_mpi\trapizoidal_mpi\source.cpp(81): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  trapizoidal_mpi.vcxproj -> E:\Books\Final Year\Odd Semester\Parallel Processing and Distrubuted System\practise\trapizoidal_mpi\Debug\trapizoidal_mpi.exe
+  trapizoidal_mpi.vcxproj -> E:\Books\Final Year\Odd Semester\Parallel Processing and Distrubuted System\practise\trapizoidal_mpi\Debug\trapizoidal_mpi.pdb (Full PDB)

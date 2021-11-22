@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1564252709 source:e:\books\final year\odd semester\parallel processing and distrubuted system\practise\fff\main.c
+	<stdio.h>
+	<omp.h>
+

@@ -1,0 +1,201 @@
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:47:3
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : MATRIX_4.ASM
+				;     PROCESSOR : I8086
+				;     DOT MATRIX TEST
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ = 001E				PPIC_C	EQU	1EH ; control register
+ = 001C				PPIC	EQU	1CH ; c port
+ = 001A				PPIB	EQU	1AH
+ = 0018				PPIA	EQU	18H
+					;	
+ 1000					ORG	1000H
+ 1000  B0 80				MOV	AL,10000000B
+ 1002  E6 1E				OUT	PPIC_C,AL
+					;
+ 1004  B0 FF				MOV	AL,11111111B
+ 1006  E6 18				OUT	PPIA,AL
+					;
+ 1008  BE 1040 R		L1:	MOV	SI,OFFSET FONT1
+					;
+ 100B  B3 08				MOV	BL,8  ; font No.
+ 100D  B7 1E			L3:	MOV	BH,30 ; display time
+					;
+ 100F  56			L2:	PUSH	SI
+ 1010  E8 1021 R			CALL	SCAN
+ 1013  5E				POP	SI
+ 1014  FE CF				DEC	BH
+ 1016  75 F7				JNZ	L2
+					;
+ 1018  83 C6 08				ADD	SI,8
+ 101B  FE CB				DEC	BL
+ 101D  75 EE				JNZ	L3
+				        ;
+ 101F  EB E7				JMP	L1
+					;
+					;	
+					;
+ 1021				SCAN    PROC	NEAR
+ 1021  B4 01				MOV	AH,00000001B
+ 1023  2E: 8A 04		SCAN1:	MOV	AL,BYTE PTR CS:[SI]
+ 1026  E6 1A				OUT	PPIB,AL
+					;		
+ 1028  8A C4				MOV	AL,AH
+ 102A  E6 1C				OUT	PPIC,AL
+ 102C  E8 1036 R			CALL	TIMER
+ 102F  46				INC	SI
+ 1030  F8				CLC
+ 1031  D0 C4				ROL	AH,1
+ 1033  73 EE				JNC	SCAN1
+ 1035  C3				RET
+ 1036				SCAN	ENDP
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:47:3
+                                                             Page     1-2
+
+
+					;
+ 1036  B9 012C			TIMER:	MOV	CX,300
+ 1039  90			TIMER1:	NOP
+ 103A  90				NOP
+ 103B  90				NOP
+ 103C  90				NOP
+ 103D  E2 FA				LOOP	TIMER1
+ 103F  C3				RET
+					;
+ 1040  FF			FONT1:  DB      11111111B
+ 1041  7F			        DB      01111111B
+ 1042  FF				DB	11111111B
+ 1043  FF				DB	11111111B
+ 1044  FF			        DB      11111111B
+ 1045  FF				DB	11111111B
+ 1046  7F			        DB      01111111B
+ 1047  FF				DB	11111111B
+					;
+ 1048  FF			FONT2:  DB      11111111B
+ 1049  3F			        DB      00111111B
+ 104A  FF				DB	11111111B
+ 104B  FF				DB	11111111B
+ 104C  FF			        DB      11111111B
+ 104D  FF				DB	11111111B
+ 104E  3F			        DB      00111111B
+ 104F  FF				DB	11111111B
+					;
+ 1050  FF			FONT3:  DB      11111111B
+ 1051  1F			        DB      00011111B
+ 1052  FF				DB	11111111B
+ 1053  FF				DB	11111111B
+ 1054  FF			        DB      11111111B
+ 1055  FF				DB	11111111B
+ 1056  1F			        DB      00011111B
+ 1057  FF				DB	11111111B
+					;
+ 1058  FF			FONT4:  DB      11111111B
+ 1059  0F			        DB      00001111B
+ 105A  7F			        DB      01111111B
+ 105B  7F			        DB      01111111B
+ 105C  7F			        DB      01111111B
+ 105D  7F			        DB      01111111B
+ 105E  0F			        DB      00001111B
+ 105F  FF				DB	11111111B
+					;
+ 1060  FF			FONT5:  DB      11111111B
+ 1061  07			        DB      00000111B
+ 1062  BF			        DB      10111111B
+ 1063  BF			        DB      10111111B
+ 1064  BF			        DB      10111111B
+ 1065  BF			        DB      10111111B
+ 1066  07			        DB      00000111B
+ 1067  FF			        DB      11111111B
+					;
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:47:3
+                                                             Page     1-3
+
+
+ 1068  FF			FONT6:  DB      11111111B
+ 1069  03			        DB      00000011B
+ 106A  DF			        DB      11011111B
+ 106B  DF			        DB      11011111B
+ 106C  DF			        DB      11011111B
+ 106D  DF			        DB      11011111B
+ 106E  03			        DB      00000011B
+ 106F  FF			        DB      11111111B
+					;	
+ 1070  FF			FONT7:  DB      11111111B
+ 1071  81			        DB      10000001B
+ 1072  6F			        DB      01101111B
+ 1073  EF			        DB      11101111B
+ 1074  EF			        DB      11101111B
+ 1075  6F			        DB      01101111B
+ 1076  81			        DB      10000001B
+ 1077  FF			        DB      11111111B
+					;
+ 1078  FF			FONT8:  DB      11111111B
+ 1079  C0			        DB      11000000B
+ 107A  B7			        DB      10110111B
+ 107B  77			        DB      01110111B
+ 107C  77			        DB      01110111B
+ 107D  B7			        DB      10110111B
+ 107E  C0			        DB      11000000B
+ 107F  FF			        DB      11111111B
+				
+					;
+ 1080				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  10/27/21 11:47:3
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	1080	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+FONT1  . . . . . . . . . . . . .  	L NEAR	1040	CODE
+FONT2  . . . . . . . . . . . . .  	L NEAR	1048	CODE
+FONT3  . . . . . . . . . . . . .  	L NEAR	1050	CODE
+FONT4  . . . . . . . . . . . . .  	L NEAR	1058	CODE
+FONT5  . . . . . . . . . . . . .  	L NEAR	1060	CODE
+FONT6  . . . . . . . . . . . . .  	L NEAR	1068	CODE
+FONT7  . . . . . . . . . . . . .  	L NEAR	1070	CODE
+FONT8  . . . . . . . . . . . . .  	L NEAR	1078	CODE
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	1008	CODE
+L2 . . . . . . . . . . . . . . .  	L NEAR	100F	CODE
+L3 . . . . . . . . . . . . . . .  	L NEAR	100D	CODE
+
+PPIA . . . . . . . . . . . . . .  	NUMBER	0018	
+PPIB . . . . . . . . . . . . . .  	NUMBER	001A	
+PPIC . . . . . . . . . . . . . .  	NUMBER	001C	
+PPIC_C . . . . . . . . . . . . .  	NUMBER	001E	
+
+SCAN . . . . . . . . . . . . . .  	N PROC	1021	CODE	Length = 0015
+SCAN1  . . . . . . . . . . . . .  	L NEAR	1023	CODE
+
+TIMER  . . . . . . . . . . . . .  	L NEAR	1036	CODE
+TIMER1 . . . . . . . . . . . . .  	L NEAR	1039	CODE
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  MATRIX_4		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+    138 Source  Lines
+    138 Total   Lines
+     25 Symbols
+
+  47012 + 408329 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

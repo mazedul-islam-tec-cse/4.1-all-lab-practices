@@ -1,0 +1,156 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : D8259_1.ASM
+				;     PROCESSOR : I8086
+				;     8259 TEST
+				;     Press IR2 button
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ = 001F				PPIC_C	EQU	1FH
+ = 001D				PPIC	EQU	1DH
+ = 001B				PPIB	EQU	1BH
+ = 0019				PPIA	EQU	19H
+					;	
+ = 0010				INTA	EQU	10H
+ = 0012				INTA2	EQU	INTA+2
+					;
+ = 0108				INT_V	EQU	42H*4
+					;
+ = 0540				STACK	EQU	540H
+					;
+ 1000					ORG	1000H
+					;
+ 1000  33 DB				XOR	BX,BX
+ 1002  8E C3				MOV	ES,BX
+ 1004  8E D8				MOV	DS,AX
+ 1006  8E D3				MOV	SS,BX
+ 1008  BC 0540				MOV	SP,STACK
+					;
+ 100B  B8 1035 R			MOV	AX,OFFSET INT_SER
+ 100E  BB 0108				MOV	BX,INT_V
+ 1011  26: 89 07			MOV	WORD PTR ES:[BX],AX
+					;
+ 1014  33 C0				XOR	AX,AX
+ 1016  26: 89 47 02			MOV	WORD PTR ES:[BX+2],AX
+					;
+ 101A  E8 104A R			CALL	INIT
+					;
+ 101D  B0 80				MOV	AL,10000000B
+ 101F  E6 1F				OUT	PPIC_C,AL
+					;
+ 1021  B0 F0				MOV	AL,11110000B
+ 1023  E6 1B				OUT	PPIB,AL
+					;
+ 1025  B0 00				MOV	AL,00000000B
+ 1027  E6 1D				OUT	PPIC,AL
+					;
+ 1029  BE 105B R		 	MOV	SI,OFFSET DATA
+ 102C  2E: 8A 04			MOV	AL,BYTE PTR CS:[SI]
+ 102F  E6 19				OUT	PPIA,AL
+					;
+ 1031  FB				STI
+ 1032  90			L2:	NOP
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-2
+
+
+ 1033  EB FD				JMP	L2		
+					;
+					;
+ 1035				INT_SER:
+ 1035  2E: 8A 04			MOV	AL,BYTE PTR CS:[SI]
+ 1038  3C 00				CMP	AL,00H
+ 103A  75 05				JNE	L3
+ 103C  BE 105B R			MOV	SI,OFFSET DATA
+ 103F  EB F4				JMP	INT_SER
+					;
+ 1041  E6 19			L3:	OUT	PPIA,AL
+ 1043  46				INC	SI
+					;  EOI command
+ 1044  B0 20				MOV	AL,00100000B
+ 1046  E6 10				OUT	INTA,AL
+					;
+ 1048  FB				STI
+ 1049  CF				IRET	
+					;
+ 104A				INIT	PROC	NEAR
+					; ICW1
+ 104A  B0 13			 	MOV	AL,00010011B
+ 104C  E6 10				OUT	INTA,AL
+					;ICW2 interrupt vector
+ 104E  B0 40				MOV	AL,40H
+ 1050  E6 12				OUT	INTA2,AL
+					;ICW4
+ 1052  B0 01				MOV	AL,00000001B
+ 1054  E6 12				OUT	INTA2,AL
+					;interrupt mask
+ 1056  B0 FB				MOV 	AL,11111011B
+ 1058  E6 12				OUT	INTA2,AL
+ 105A  C3				RET
+ 105B				INIT	ENDP
+					;	
+					;
+ 105B  C0			DATA:	DB	11000000B
+ 105C  F9				DB	11111001B
+ 105D  A4				DB	10100100B
+ 105E  B0				DB	10110000B
+ 105F  99				DB	10011001B
+ 1060  92				DB	10010010B
+ 1061  82				DB	10000010B
+ 1062  F8				DB	11111000B
+ 1063  80				DB	10000000B
+ 1064  90				DB	10010000B
+ 1065  00				DB	00H
+ 1066				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	1066	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+DATA . . . . . . . . . . . . . .  	L NEAR	105B	CODE
+
+INIT . . . . . . . . . . . . . .  	N PROC	104A	CODE	Length = 0011
+INTA . . . . . . . . . . . . . .  	NUMBER	0010	
+INTA2  . . . . . . . . . . . . .  	NUMBER	0012	
+INT_SER  . . . . . . . . . . . .  	L NEAR	1035	CODE
+INT_V  . . . . . . . . . . . . .  	NUMBER	0108	
+
+L2 . . . . . . . . . . . . . . .  	L NEAR	1032	CODE
+L3 . . . . . . . . . . . . . . .  	L NEAR	1041	CODE
+
+PPIA . . . . . . . . . . . . . .  	NUMBER	0019	
+PPIB . . . . . . . . . . . . . .  	NUMBER	001B	
+PPIC . . . . . . . . . . . . . .  	NUMBER	001D	
+PPIC_C . . . . . . . . . . . . .  	NUMBER	001F	
+
+STACK  . . . . . . . . . . . . .  	NUMBER	0540	
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  I8259_1		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+    103 Source  Lines
+    103 Total   Lines
+     19 Symbols
+
+  46664 + 386580 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

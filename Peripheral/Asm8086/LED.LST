@@ -1,0 +1,91 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : LED.ASM
+				;     PROCESSOR : I8086
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ = 001F				PPIC_C	EQU	1FH
+ = 001D				PPIC	EQU	1DH
+ = 001B				PPIB	EQU	1BH
+ = 0019				PPIA	EQU	19H
+					;	
+ 1000					ORG	1000H
+ 1000  B0 80				MOV	AL,10000000B
+ 1002  E6 1F				OUT	PPIC_C,AL
+					;
+ 1004  B0 FF				MOV	AL,11111111B
+ 1006  E6 19				OUT	PPIA,AL
+					;
+ 1008  B0 00				MOV	AL,00000000B
+ 100A  E6 1D				OUT	PPIC,AL
+					;
+ 100C  B0 F1			L1:	MOV	AL,11110001B
+ 100E  E6 1B			L2:	OUT	PPIB,AL
+ 1010  E8 101E R			CALL	TIMER
+ 1013  D0 E0				SHL	AL,1
+ 1015  A8 10				TEST	AL,00010000B
+ 1017  75 F3				JNZ	L1
+ 1019  0C F0				OR	AL,11110000B
+ 101B  EB F1				JMP	L2		
+					;
+ 101D  CC				INT	3
+					;		
+ 101E  B9 0001			TIMER:	MOV	CX,1
+ 1021  51			TIMER2:	PUSH	CX
+ 1022  B9 0000			       	MOV	CX,0
+ 1025  90			TIMER1:	NOP
+ 1026  90				NOP
+ 1027  90				NOP
+ 1028  90				NOP
+ 1029  E2 FA				LOOP	TIMER1
+ 102B  59				POP	CX
+ 102C  E2 F3				LOOP	TIMER2
+ 102E  C3				RET
+					;
+ 102F				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	102F	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	100C	CODE
+L2 . . . . . . . . . . . . . . .  	L NEAR	100E	CODE
+
+PPIA . . . . . . . . . . . . . .  	NUMBER	0019	
+PPIB . . . . . . . . . . . . . .  	NUMBER	001B	
+PPIC . . . . . . . . . . . . . .  	NUMBER	001D	
+PPIC_C . . . . . . . . . . . . .  	NUMBER	001F	
+
+TIMER  . . . . . . . . . . . . .  	L NEAR	101E	CODE
+TIMER1 . . . . . . . . . . . . .  	L NEAR	1025	CODE
+TIMER2 . . . . . . . . . . . . .  	L NEAR	1021	CODE
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  LED		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     48 Source  Lines
+     48 Total   Lines
+     15 Symbols
+
+  46958 + 388334 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

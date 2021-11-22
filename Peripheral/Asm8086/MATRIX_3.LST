@@ -1,0 +1,201 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : MATRIX_3.ASM
+				;     PROCESSOR : I8086
+				;     DOT MATRIX TEST
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ = 001E				PPIC_C	EQU	1EH ; control register
+ = 001C				PPIC	EQU	1CH 
+ = 001A				PPIB	EQU	1AH
+ = 0018				PPIA	EQU	18H
+					;	
+ 1000					ORG	1000H
+ 1000  B0 80				MOV	AL,10000000B
+ 1002  E6 1E				OUT	PPIC_C,AL
+					;
+ 1004  B0 FF				MOV	AL,11111111B
+ 1006  E6 18				OUT	PPIA,AL
+					;
+ 1008  BE 1040 R		L1:	MOV	SI,OFFSET FONT1
+					;
+ 100B  B3 08				MOV	BL,8  ; font No.
+ 100D  B7 1E			L3:	MOV	BH,30 ; display time
+					;
+ 100F  56			L2:	PUSH	SI
+ 1010  E8 1021 R			CALL	SCAN
+ 1013  5E				POP	SI
+ 1014  FE CF				DEC	BH
+ 1016  75 F7				JNZ	L2
+					;
+ 1018  83 C6 08				ADD	SI,8
+ 101B  FE CB				DEC	BL
+ 101D  75 EE				JNZ	L3
+				        ;
+ 101F  EB E7				JMP	L1
+					;
+					;	
+					;
+ 1021				SCAN    PROC	NEAR
+ 1021  B4 01				MOV	AH,00000001B
+ 1023  2E: 8A 04		SCAN1:	MOV	AL,BYTE PTR CS:[SI]
+ 1026  E6 1A				OUT	PPIB,AL
+					;		
+ 1028  8A C4				MOV	AL,AH
+ 102A  E6 1C				OUT	PPIC,AL
+ 102C  E8 1036 R			CALL	TIMER
+ 102F  46				INC	SI
+ 1030  F8				CLC
+ 1031  D0 C4				ROL	AH,1
+ 1033  73 EE				JNC	SCAN1
+ 1035  C3				RET
+ 1036				SCAN	ENDP
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-2
+
+
+					;
+ 1036  B9 012C			TIMER:	MOV	CX,300
+ 1039  90			TIMER1:	NOP
+ 103A  90				NOP
+ 103B  90				NOP
+ 103C  90				NOP
+ 103D  E2 FA				LOOP	TIMER1
+ 103F  C3				RET
+					;
+ 1040  FF			FONT1:  DB      11111111B
+ 1041  FF				DB	11111111B
+ 1042  FF				DB	11111111B
+ 1043  FF				DB	11111111B
+ 1044  FF				DB	11111111B
+ 1045  FF				DB	11111111B
+ 1046  FF				DB	11111111B
+ 1047  FF				DB	11111111B
+					;
+ 1048  C0			FONT2:  DB      11000000B
+ 1049  FF			        DB      11111111B
+ 104A  FF				DB	11111111B
+ 104B  FF				DB	11111111B
+ 104C  FF				DB	11111111B
+ 104D  FF				DB	11111111B
+ 104E  FF				DB	11111111B
+ 104F  FF				DB	11111111B
+					;
+ 1050  B7			FONT3:  DB      10110111B
+ 1051  C0			        DB      11000000B
+ 1052  FF			        DB      11111111B
+ 1053  FF				DB	11111111B
+ 1054  FF				DB	11111111B
+ 1055  FF				DB	11111111B
+ 1056  FF				DB	11111111B
+ 1057  FF				DB	11111111B
+					;
+ 1058  77			FONT4:  DB      01110111B
+ 1059  B7			        DB      10110111B
+ 105A  C0			        DB      11000000B
+ 105B  FF			        DB      11111111B
+ 105C  FF				DB	11111111B
+ 105D  FF				DB	11111111B
+ 105E  FF				DB	11111111B
+ 105F  FF				DB	11111111B
+					;
+ 1060  77			FONT5:  DB      01110111B
+ 1061  77			        DB      01110111B
+ 1062  B7			        DB      10110111B
+ 1063  C0			        DB      11000000B
+ 1064  FF			        DB      11111111B
+ 1065  FF				DB	11111111B
+ 1066  FF				DB	11111111B
+ 1067  FF				DB	11111111B
+					;
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-3
+
+
+ 1068  B7			FONT6:  DB      10110111B
+ 1069  77			        DB      01110111B
+ 106A  77			        DB      01110111B
+ 106B  B7			        DB      10110111B
+ 106C  C0			        DB      11000000B
+ 106D  FF			        DB      11111111B
+ 106E  FF				DB	11111111B
+ 106F  FF				DB	11111111B
+					;	
+ 1070  C0			FONT7:  DB      11000000B
+ 1071  B7			        DB      10110111B
+ 1072  77			        DB      01110111B
+ 1073  77			        DB      01110111B
+ 1074  B7			        DB      10110111B
+ 1075  C0			        DB      11000000B
+ 1076  FF			        DB      11111111B
+ 1077  FF				DB	11111111B
+					;
+ 1078  FF			FONT8:  DB      11111111B
+ 1079  C0			        DB      11000000B
+ 107A  B7			        DB      10110111B
+ 107B  77			        DB      01110111B
+ 107C  77			        DB      01110111B
+ 107D  B7			        DB      10110111B
+ 107E  C0			        DB      11000000B
+ 107F  FF			        DB      11111111B
+				
+					;
+ 1080				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	1080	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+FONT1  . . . . . . . . . . . . .  	L NEAR	1040	CODE
+FONT2  . . . . . . . . . . . . .  	L NEAR	1048	CODE
+FONT3  . . . . . . . . . . . . .  	L NEAR	1050	CODE
+FONT4  . . . . . . . . . . . . .  	L NEAR	1058	CODE
+FONT5  . . . . . . . . . . . . .  	L NEAR	1060	CODE
+FONT6  . . . . . . . . . . . . .  	L NEAR	1068	CODE
+FONT7  . . . . . . . . . . . . .  	L NEAR	1070	CODE
+FONT8  . . . . . . . . . . . . .  	L NEAR	1078	CODE
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	1008	CODE
+L2 . . . . . . . . . . . . . . .  	L NEAR	100F	CODE
+L3 . . . . . . . . . . . . . . .  	L NEAR	100D	CODE
+
+PPIA . . . . . . . . . . . . . .  	NUMBER	0018	
+PPIB . . . . . . . . . . . . . .  	NUMBER	001A	
+PPIC . . . . . . . . . . . . . .  	NUMBER	001C	
+PPIC_C . . . . . . . . . . . . .  	NUMBER	001E	
+
+SCAN . . . . . . . . . . . . . .  	N PROC	1021	CODE	Length = 0015
+SCAN1  . . . . . . . . . . . . .  	L NEAR	1023	CODE
+
+TIMER  . . . . . . . . . . . . .  	L NEAR	1036	CODE
+TIMER1 . . . . . . . . . . . . .  	L NEAR	1039	CODE
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  MATRIX_3		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+    138 Source  Lines
+    138 Total   Lines
+     25 Symbols
+
+  46688 + 384509 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

@@ -1,0 +1,151 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : LCD_2.ASM
+				;     PROCESSOR : I8086
+				;     LCD TEST
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+					;
+ = 0540				STACK	EQU	0540H
+					;
+ = 0000				LCDC	EQU	00H
+ = 0002				LCDC_S	EQU	02H
+ = 0004				LCDD	EQU	04H
+					;	
+ 1000					ORG	1000H
+					;
+ 1000  33 C0				XOR	AX,AX
+ 1002  8E D0				MOV	SS,AX
+ 1004  BC 0540				MOV	SP,STACK
+					;
+ 1007  E8 1031 R			CALL	ALLCLR
+					;
+ 100A  E8 1036 R			CALL	ENTMODE
+ 100D  E8 103B R		L1:	CALL	CUSOR1
+ 1010  BE 1018 R			MOV	SI,OFFSET DATA
+ 1013  E8 1054 R			CALL	STRING
+ 1016  EB F5				JMP	L1
+					;
+ 1018  4D 44 41 2D 57 69	DATA	DB	'MDA-Win8086 Training Kit',00H
+       6E 38 30 38 36 20	
+       54 72 61 69 6E 69	
+       6E 67 20 4B 69 74	
+       00			
+					;
+					; LCD instruction
+ 1031  B4 01			ALLCLR:	MOV	AH,01H
+ 1033  EB 08 90				JMP	LNXX
+					;
+ 1036				ENTMODE:
+ 1036  B4 07			        MOV	AH,00000111B
+ 1038  EB 03 90				JMP	LNXX
+					;
+ 103B  B4 90			CUSOR1:	MOV	AH,90H
+					;
+ 103D  E8 1045 R		LNXX:	CALL	BUSY
+ 1040  8A C4				MOV	AL,AH
+ 1042  E6 00				OUT	LCDC,AL
+ 1044  C3				RET
+					; busy flag check
+ 1045  E4 02			BUSY:	IN	AL,LCDC_S
+ 1047  24 80				AND	AL,10000000B
+ 1049  75 FA				JNZ	BUSY
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-2
+
+
+ 104B  C3				RET
+					;
+					; 1 char. LCD OUT 
+					; AH = out data
+ 104C				CHAROUT:
+ 104C  E8 1045 R			CALL	BUSY
+					;
+ 104F  8A C4				MOV	AL,AH
+ 1051  E6 04				OUT	LCDD,AL
+ 1053  C3				RET
+					;
+ 1054  2E: 8A 24		STRING:	MOV	AH,BYTE PTR CS:[SI]
+ 1057  80 FC 00				CMP	AH,00H
+ 105A  74 0C				JE	STRING1
+					; out
+ 105C  E8 1045 R			CALL	BUSY
+ 105F  E8 104C R			CALL	CHAROUT
+ 1062  46				INC	SI
+ 1063  E8 1069 R			CALL	TIMER
+ 1066  EB EC				JMP	STRING
+ 1068				STRING1:
+ 1068  C3			  	RET
+					;		
+ 1069  B9 0001			TIMER:	MOV	CX,1
+ 106C  51			TIMER2:	PUSH	CX
+ 106D  B9 0000			       	MOV	CX,0
+ 1070  90			TIMER1:	NOP
+ 1071  90				NOP
+ 1072  90				NOP
+ 1073  90				NOP
+ 1074  E2 FA				LOOP	TIMER1
+ 1076  59				POP	CX
+ 1077  E2 F3				LOOP	TIMER2
+ 1079  C3				RET
+					;
+ 107A				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	107A	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+ALLCLR . . . . . . . . . . . . .  	L NEAR	1031	CODE
+
+BUSY . . . . . . . . . . . . . .  	L NEAR	1045	CODE
+
+CHAROUT  . . . . . . . . . . . .  	L NEAR	104C	CODE
+CUSOR1 . . . . . . . . . . . . .  	L NEAR	103B	CODE
+
+DATA . . . . . . . . . . . . . .  	L BYTE	1018	CODE
+
+ENTMODE  . . . . . . . . . . . .  	L NEAR	1036	CODE
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	100D	CODE
+LCDC . . . . . . . . . . . . . .  	NUMBER	0000	
+LCDC_S . . . . . . . . . . . . .  	NUMBER	0002	
+LCDD . . . . . . . . . . . . . .  	NUMBER	0004	
+LNXX . . . . . . . . . . . . . .  	L NEAR	103D	CODE
+
+STACK  . . . . . . . . . . . . .  	NUMBER	0540	
+STRING . . . . . . . . . . . . .  	L NEAR	1054	CODE
+STRING1  . . . . . . . . . . . .  	L NEAR	1068	CODE
+
+TIMER  . . . . . . . . . . . . .  	L NEAR	1069	CODE
+TIMER1 . . . . . . . . . . . . .  	L NEAR	1070	CODE
+TIMER2 . . . . . . . . . . . . .  	L NEAR	106C	CODE
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  LCD_2		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     87 Source  Lines
+     87 Total   Lines
+     23 Symbols
+
+  46714 + 386530 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

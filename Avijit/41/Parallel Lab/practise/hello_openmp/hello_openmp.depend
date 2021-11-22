@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1564252193 source:e:\books\final year\odd semester\parallel processing and distrubuted system\practise\hello_openmp\main.c
+	<stdio.h>
+	<omp.h>
+

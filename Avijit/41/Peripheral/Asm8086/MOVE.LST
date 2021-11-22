@@ -1,0 +1,56 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : MOVE.ASM
+				;     PROCESSOR : I8086
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ 1000					ORG	1000H
+ 1000  B8 1234				MOV	AX,1234H
+ 1003  BB 5678				MOV	BX,5678H
+ 1006  B9 1000				MOV	CX,1000H
+ 1009  BA 2000				MOV	DX,2000H
+					;
+ 100C  8E DA				MOV	DS,DX
+ 100E  8E C0				MOV	ES,AX
+					;
+ 1010  8B F0				MOV	SI,AX
+ 1012  8B FB				MOV	DI,BX
+ 1014  BD 3000				MOV	BP,3000H
+					;
+ 1017  CC				INT	3
+					;
+ 1018				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	1018	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  MOVE		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     25 Source  Lines
+     25 Total   Lines
+      6 Symbols
+
+  46944 + 388348 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

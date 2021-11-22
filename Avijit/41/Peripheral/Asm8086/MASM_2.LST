@@ -1,0 +1,76 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : MASM_2.ASM
+				;     PROCESSOR : I8086
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ = 0000				SEG_D	EQU	0000H
+					;
+ 1000					ORG	1000H
+ 1000  B8 0000				MOV	AX,SEG_D
+ 1003  8E D8				MOV	DS,AX
+ 1005  8E C0				MOV	ES,AX
+					;
+ 1007  BB 2000 R			MOV	BX,OFFSET DATA
+ 100A  8B 07				MOV	AX,[BX]
+ 100C  8A 6F 02				MOV	CH,[BX+2]
+ 100F  8A 4F 03				MOV	CL,[BX+3]
+					;
+ 1012  8B EB				MOV	BP,BX
+ 1014  3E: 8B 56 04			MOV	DX,DS:[BP+4]
+					;
+ 1018  26: 8B 76 06			MOV	SI,ES:[BP+6]
+ 101C  8B 7E 08				MOV	DI,[BP+8]
+					;
+ 101F  8B 1E 200A R			MOV	BX,WORD PTR DATA+10
+ 1023  CC				INT	3
+					;
+ 2000					ORG	2000H
+ 2000  3412			DATA	DW	3412H
+ 2002  7856				DW	7856H
+ 2004  CDAB				DW	0CDABH
+ 2006  14F0				DW	14F0H
+ 2008  5368				DW	5368H
+ 200A  C4B1			DATA1	DW	0C4B1H
+ 200C  2010				DW	2010H
+					;		
+ 200E				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	200E	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+DATA . . . . . . . . . . . . . .  	L WORD	2000	CODE
+DATA1  . . . . . . . . . . . . .  	L WORD	200A	CODE
+
+SEG_D  . . . . . . . . . . . . .  	NUMBER	0000	
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  MASM_2		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     40 Source  Lines
+     40 Total   Lines
+      9 Symbols
+
+  46702 + 388590 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

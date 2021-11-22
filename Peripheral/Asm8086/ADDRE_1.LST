@@ -1,0 +1,67 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : ADDRE_1.ASM
+				;     PROCESSOR : I8086
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ 0000  B8 0000			        MOV     AX,0000H
+ 0003  8E D8			        MOV     DS,AX
+ 0005  8E D0			        MOV     SS,AX
+ 0007  8E C0			        MOV     ES,AX
+				        ;
+ 0009  BB 2000			        MOV     BX,2000H
+ 000C  8B EB			        MOV     BP,BX
+ 000E  BE 0002			        MOV     SI,2
+ 0011  BF 0004			        MOV     DI,4
+				        ;
+ 0014  8A 48 01			        MOV     CL,[BX+SI+1]
+ 0017  8A 6B 02			        MOV     CH,[BP+DI+2]
+				        ;
+ 001A  8B 52 04			        MOV     DX,[BP+SI+4]
+				        ;
+ 001D  8A 00			        MOV     AL,[BX+SI]
+ 001F  8A 22			        MOV     AH,[BP+SI]
+				        ;
+ 0021  92			        XCHG    AX,DX
+				        ;
+ 0022  8D 40 04			        LEA     AX,[BX+SI+4]
+				        ;
+ 0025  C4 1F			        LES     BX,[BX+00]
+ 0027  C5 38			        LDS     DI,[BX+SI]
+ 0029  CC			        INT     3
+					;
+ 002A				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	002A	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  ADDRE_1		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     36 Source  Lines
+     36 Total   Lines
+      6 Symbols
+
+  46778 + 388514 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

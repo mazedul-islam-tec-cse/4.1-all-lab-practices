@@ -1,0 +1,157 @@
+Open segments:Microsoft (R) Macro Assembler Version 5.10                  9/22/19 14:41:01
+                                                             Page     1-1
+
+
+
+CODE . . . . . . . . . . . . . .  	
+Microsoft (R) Macro Assembler Version 5.10                  9/22/19 14:41:01
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : MATRIX_4.ASM
+				;     PROCESSOR : I8086
+				;     DOT MATRIX TEST
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ = 001E				PPIC_C	EQU	1EH ; control register
+ = 001C				PPIC	EQU	1CH ; c port
+ = 001A				PPIB	EQU	1AH
+ = 0018				PPIA	EQU	18H
+					;	
+ 1000					ORG	1000H
+ 1000  B0 80				MOV	AL,10000000B
+ 1002  E6 1E				OUT	PPIC_C,AL
+					;
+ 1004  B0 FF				MOV	AL,11111111B
+ 1006  E6 18				OUT	PPIA,AL
+					;
+ 1008  BE 1040 R		L1:	MOV	SI,OFFSET FONT1
+					;
+ 100B  B3 03				MOV	BL,3  ; font No.
+ 100D  B7 1E			L3:	MOV	BH,30 ; display time
+					;
+ 100F  56			L2:	PUSH	SI
+ 1010  E8 1021 R			CALL	SCAN
+ 1013  5E				POP	SI
+ 1014  FE CF				DEC	BH
+ 1016  75 F7				JNZ	L2
+					;
+ 1018  83 C6 06				ADD	SI,6
+ 101B  FE CB				DEC	BL
+ 101D  75 EE				JNZ	L3
+				        ;
+ 101F  EB E7				JMP	L1
+					;
+					;	
+					;
+ 1021				SCAN    PROC	NEAR
+ 1021  B4 01				MOV	AH,00000001B
+ 1023  2E: 8A 04		SCAN1:	MOV	AL,BYTE PTR CS:[SI]
+ 1026  E6 1A				OUT	PPIB,AL
+					;		
+ 1028  8A C4				MOV	AL,AH
+ 102A  E6 1C				OUT	PPIC,AL
+ 102C  E8 1036 R			CALL	TIMER
+ 102F  46				INC	SI
+ 1030  F8				CLC
+ 1031  D0 C4				ROL	AH,1
+ 1033  73 EE				JNC	SCAN1
+ 1035  C3				RET
+ 1036				SCAN	ENDP
+Microsoft (R) Macro Assembler Version 5.10                  9/22/19 14:41:01
+                                                             Page     1-2
+
+
+					;
+ 1036  B9 012C			TIMER:	MOV	CX,300
+ 1039  90			TIMER1:	NOP
+ 103A  90				NOP
+ 103B  90				NOP
+ 103C  90				NOP
+ 103D  E2 FA				LOOP	TIMER1
+ 103F  C3				RET
+					;
+ 1040  7F			FONT1:  DB      01111111B
+ 1041  7F			        DB      01111111B
+ 1042  7F				DB	01111111B
+ 1043  00				DB	00000000B
+ 1044  7F			        DB      01111111B
+ 1045  7F				DB	01111111B
+ 1046  7F			        DB      01111111B
+ 1047  FF				DB	11111111B
+					;
+ 1048  00			FONT2:  DB      00000000B
+ 1049  6E			        DB      01101110B
+ 104A  6E				DB	01101110B
+ 104B  6E				DB	01101110B
+ 104C  6E			        DB      01101110B
+ 104D  6E				DB	01101110B
+ 104E  6E			        DB      01101110B
+ 104F  FF				DB	11111111B
+					;
+ 1050  C3			FONT3:  DB      11000011B
+ 1051  BD			        DB      10111101B
+ 1052  BD				DB	10111101B
+ 1053  BD				DB	10111101B
+ 1054  BD			        DB      10111101B
+ 1055  BD				DB	10111101B
+ 1056  BD			        DB      10111101B
+ 1057  FF				DB	11111111B
+					;
+					
+				
+				
+					;CODE	ENDS
+					END
+Open segments:
+CODE . . . . . . . . . . . . . .  	
+Microsoft (R) Macro Assembler Version 5.10                  9/22/19 14:41:01
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	0000	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+FONT1  . . . . . . . . . . . . .  	L NEAR	1040	CODE
+FONT2  . . . . . . . . . . . . .  	L NEAR	1048	CODE
+FONT3  . . . . . . . . . . . . .  	L NEAR	1050	CODE
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	1008	CODE
+L2 . . . . . . . . . . . . . . .  	L NEAR	100F	CODE
+L3 . . . . . . . . . . . . . . .  	L NEAR	100D	CODE
+
+PPIA . . . . . . . . . . . . . .  	NUMBER	0018	
+PPIB . . . . . . . . . . . . . .  	NUMBER	001A	
+PPIC . . . . . . . . . . . . . .  	NUMBER	001C	
+PPIC_C . . . . . . . . . . . . .  	NUMBER	001E	
+
+SCAN . . . . . . . . . . . . . .  	N PROC	1021	CODE	Length = 0015
+SCAN1  . . . . . . . . . . . . .  	L NEAR	1023	CODE
+
+TIMER  . . . . . . . . . . . . .  	L NEAR	1036	CODE
+TIMER1 . . . . . . . . . . . . .  	L NEAR	1039	CODE
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  nnn		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     95 Source  Lines
+     95 Total   Lines
+     20 Symbols
+
+  47052 + 410336 Bytes symbol space free
+
+      0 Warning Errors
+      1 Severe  Errors

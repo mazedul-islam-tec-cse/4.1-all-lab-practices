@@ -1,0 +1,106 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : MATRIX_2.ASM
+				;     PROCESSOR : I8086
+				;     DOT MATRIX TEST
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ = 001E				PPIC_C	EQU	1EH ; control register
+ = 001C				PPIC	EQU	1CH ; c port
+ = 001A				PPIB	EQU	1AH
+ = 0018				PPIA	EQU	18H
+					;	
+ 1000					ORG	1000H
+ 1000  B0 80				MOV	AL,10000000B
+ 1002  E6 1E				OUT	PPIC_C,AL
+					;
+ 1004  B0 FF				MOV	AL,11111111B
+ 1006  E6 18				OUT	PPIA,AL
+					;
+ 1008  BE 102C R		L1:	MOV	SI,OFFSET FONT
+					;
+ 100B  B4 01				MOV	AH,00000001B
+					;
+ 100D  2E: 8A 04		L2:	MOV	AL,BYTE PTR CS:[SI]
+ 1010  E6 1A				OUT	PPIB,AL
+					;		
+ 1012  8A C4				MOV	AL,AH
+ 1014  E6 1C				OUT	PPIC,AL
+ 1016  E8 1022 R			CALL	TIMER
+ 1019  46				INC	SI
+ 101A  F8				CLC
+ 101B  D0 C4				ROL	AH,1
+ 101D  73 EE				JNC	L2
+ 101F  EB E7				JMP	L1		
+					;
+ 1021  CC				INT	3
+					;		
+ 1022  B9 012C			TIMER:	MOV	CX,300
+ 1025  90			TIMER1:	NOP
+ 1026  90				NOP
+ 1027  90				NOP
+ 1028  90				NOP
+ 1029  E2 FA				LOOP	TIMER1
+ 102B  C3				RET
+					;
+ 102C  FF			FONT:   DB      11111111B
+ 102D  C0			        DB      11000000B
+ 102E  B7			        DB      10110111B
+ 102F  77			        DB      01110111B
+ 1030  77			        DB      01110111B
+ 1031  B7			        DB      10110111B
+ 1032  C0			        DB      11000000B
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-2
+
+
+ 1033  FF			        DB      11111111B
+				
+ 1034				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	1034	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+FONT . . . . . . . . . . . . . .  	L NEAR	102C	CODE
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	1008	CODE
+L2 . . . . . . . . . . . . . . .  	L NEAR	100D	CODE
+
+PPIA . . . . . . . . . . . . . .  	NUMBER	0018	
+PPIB . . . . . . . . . . . . . .  	NUMBER	001A	
+PPIC . . . . . . . . . . . . . .  	NUMBER	001C	
+PPIC_C . . . . . . . . . . . . .  	NUMBER	001E	
+
+TIMER  . . . . . . . . . . . . .  	L NEAR	1022	CODE
+TIMER1 . . . . . . . . . . . . .  	L NEAR	1025	CODE
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  MATRIX_2		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     58 Source  Lines
+     58 Total   Lines
+     15 Symbols
+
+  46688 + 386556 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

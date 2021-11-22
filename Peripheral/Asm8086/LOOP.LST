@@ -1,0 +1,58 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : LOOP.ASM
+				;     PROCESSOR : I8086
+				;*****************************************
+ 0000					CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+ 1000					ORG	1000H
+ 1000  B8 0000				MOV	AX,0000H
+ 1003  8E D8				MOV	DS,AX
+					;
+ 1005  BE 20FF				MOV	SI,20FFH
+ 1008  B3 10				MOV	BL,10H
+ 100A  B9 0010			L1:	MOV	CX,0010H
+ 100D  88 1C			L2:	MOV	[SI],BL
+ 100F  4E				DEC	SI
+ 1010  E2 FB				LOOP	L2
+ 1012  FE CB				DEC	BL
+ 1014  75 F4				JNZ	L1
+					;
+ 1016  CC				INT	3
+					;
+ 1017				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	1017	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+L1 . . . . . . . . . . . . . . .  	L NEAR	100A	CODE
+L2 . . . . . . . . . . . . . . .  	L NEAR	100D	CODE
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  LOOP		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     24 Source  Lines
+     24 Total   Lines
+      8 Symbols
+
+  46906 + 388386 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

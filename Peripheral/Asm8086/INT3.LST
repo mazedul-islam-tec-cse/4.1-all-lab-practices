@@ -1,0 +1,73 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : INT3.ASM
+				;     PROCESSOR : I8086
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ = 0084				V_TAB	EQU	21H*4
+ = 0000				SEG_D	EQU	0000H
+					;
+ 1000					ORG	1000H
+ 1000  B8 0000				MOV	AX,SEG_D
+ 1003  8E D8				MOV	DS,AX
+ 1005  BB 0084				MOV	BX,V_TAB
+ 1008  B8 101F R			MOV	AX,OFFSET INT_SER
+ 100B  89 07				MOV	WORD PTR [BX],AX
+					;
+ 100D  43				INC	BX
+ 100E  43				INC	BX
+					;
+ 100F  BA 0000				MOV	DX,0
+ 1012  89 17				MOV	WORD PTR [BX],DX
+					;
+ 1014  B8 1234				MOV	AX,1234H
+ 1017  BB 6789				MOV	BX,6789H
+ 101A  CD 21				INT	21H
+ 101C  90				NOP
+ 101D  90				NOP
+ 101E  CC				INT	3
+					;
+ 101F  03 C3			INT_SER: ADD	AX,BX
+ 1021  CF				IRET
+					;		
+ 1022				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	1022	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+INT_SER  . . . . . . . . . . . .  	L NEAR	101F	CODE
+
+SEG_D  . . . . . . . . . . . . .  	NUMBER	0000	
+
+V_TAB  . . . . . . . . . . . . .  	NUMBER	0084	
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  INT3		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     36 Source  Lines
+     36 Total   Lines
+      9 Symbols
+
+  46830 + 388462 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

@@ -1,0 +1,9 @@
+﻿  odd_even.cpp
+e:\books\final year\odd semester\parallel processing and distrubuted system\practise\odd_even\odd_even\odd_even.cpp(151): warning C4101: 'left': unreferenced local variable
+e:\books\final year\odd semester\parallel processing and distrubuted system\practise\odd_even\odd_even\odd_even.cpp(138): warning C4101: 'status': unreferenced local variable
+e:\books\final year\odd semester\parallel processing and distrubuted system\practise\odd_even\odd_even\odd_even.cpp(141): warning C4101: 'tmp': unreferenced local variable
+e:\books\final year\odd semester\parallel processing and distrubuted system\practise\odd_even\odd_even\odd_even.cpp(141): warning C4101: 'i': unreferenced local variable
+e:\books\final year\odd semester\parallel processing and distrubuted system\practise\odd_even\odd_even\odd_even.cpp(151): warning C4101: 'right': unreferenced local variable
+e:\books\final year\odd semester\parallel processing and distrubuted system\practise\odd_even\odd_even\odd_even.cpp(149): warning C4101: 'global_count': unreferenced local variable
+  odd_even.vcxproj -> E:\Books\Final Year\Odd Semester\Parallel Processing and Distrubuted System\practise\odd_even\Debug\odd_even.exe
+  odd_even.vcxproj -> E:\Books\Final Year\Odd Semester\Parallel Processing and Distrubuted System\practise\odd_even\Debug\odd_even.pdb (Full PDB)

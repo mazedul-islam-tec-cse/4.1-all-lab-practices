@@ -1,0 +1,44 @@
+;*****************************************
+;     MDA-Win8086 EXPERIMENT PROGRAM    *
+;     FILENAME  : MASM_2.ASM
+;     PROCESSOR : I8086
+;*****************************************
+CODE	SEGMENT
+	ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+	;
+SEG_D	EQU	0000H
+	;
+	ORG	1000H
+	MOV	AX,SEG_D
+	MOV	DS,AX
+	MOV	ES,AX
+	;
+	MOV	BX,OFFSET DATA
+	MOV	AX,[BX]
+	MOV	CH,[BX+2]
+	MOV	CL,[BX+3]
+	;
+	MOV	BP,BX
+	MOV	DX,DS:[BP+4]
+	;
+	MOV	SI,ES:[BP+6]
+	MOV	DI,[BP+8]
+	;
+	MOV	BX,WORD PTR DATA+10
+	INT	3
+	;
+	ORG	2000H
+DATA	DW	3412H
+	DW	7856H
+	DW	0CDABH
+	DW	14F0H
+	DW	5368H
+DATA1	DW	0C4B1H
+	DW	2010H
+	;		
+CODE	ENDS
+	END
+		
+		
+		
+

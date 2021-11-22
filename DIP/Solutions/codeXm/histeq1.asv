@@ -1,0 +1,33 @@
+a=imread('cameraman.jpg');
+
+r=size(a,1);
+c=size(a,2);
+
+
+for i=1:r
+	for j=1:c
+	v=a(i,j)+1;
+f(v)=f(v)+1;
+pdf(v)=f(v)/n;
+end
+end
+
+l=255; pcdf=0;
+for i=1:size(pdf)
+	cdf(i)=pcdf+pdf(i);
+	pcdf=cdf(i);
+	lcdf(i)=l*cdf(i);
+	rcdf(i)=round(lcdf(i));
+end
+
+for i =1:r
+	for j=1:c
+		x(i,j)=rcdf(a(i,j))+1;
+		end
+end
+
+y=histeq(a);
+
+subplot(2,2,1),imshow(a);
+subplot(2,2,3),imshow(x);
+subplot(2,2,4),imshow(y);

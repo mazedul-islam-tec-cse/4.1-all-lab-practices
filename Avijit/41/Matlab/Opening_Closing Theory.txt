@@ -1,0 +1,22 @@
+http://matlab.izmiran.ru/help/toolbox/images/morph7.html
+
+
+You can use morphological opening to remove small objects from an image while preserving the shape and size of larger objects in the image. For example, you can use the imopen function to remove all the circuit lines from the original circuit image, circbw.tif, creating an output image that contains only the rectangular shapes of the microchips.
+
+To morphologically open the image, perform these steps:
+
+Read the image into the MATLAB workspace.
+BW1 = imread('circbw.tif');
+Create a structuring element.
+SE = strel('rectangle',[40 30]);
+
+The structuring element should be large enough to remove the lines when you erode the image, but not large enough to remove the rectangles. It should consist of all 1's, so it removes everything but large contiguous patches of foreground pixels.
+Erode the image with the structuring element.
+BW2 = imerode(BW1,SE);
+imshow(BW2)
+This removes all the lines, but also shrinks the rectangles.
+
+To restore the rectangles to their original sizes, dilate the eroded image using the same structuring element, SE.
+BW3 = imdilate(BW2,SE);
+imshow(BW3
+

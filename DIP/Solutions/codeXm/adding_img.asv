@@ -1,0 +1,7 @@
+clear all;
+x1=imread('im1.jpg');
+x2=imread('im2.jpg');
+x3=imread('im3.jpg');
+x4=imread('im4.jpg');
+r=size(x1,1)
+c=si

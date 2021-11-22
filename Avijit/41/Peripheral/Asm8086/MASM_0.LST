@@ -1,0 +1,81 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : MASM_0.ASM
+				;     PROCESSOR : I8086
+				;*****************************************
+ 0000					CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+ = 0000				SEG_D	EQU	0000H
+ = 006E				BIN_N	EQU	01101110B
+ = 0030				ZERO_ASC EQU	30H
+ = 0008				COUNT	EQU	0008H
+					;
+ 1000					ORG	1000H
+ 1000  B8 0000				MOV	AX,SEG_D
+ 1003  8E D8				MOV	DS,AX
+					;
+ 1005  B3 6E				MOV	BL,BIN_N
+ 1007  BE 101D R			MOV	SI,OFFSET DATA
+ 100A  B9 0008				MOV	CX,COUNT
+					;
+ 100D  C6 04 30			NEXT:	MOV	BYTE PTR[SI],ZERO_ASC
+ 1010  F6 C3 01				TEST	BL,1
+ 1013  74 02				JZ	ZERO
+ 1015  FE 04				INC	BYTE PTR[SI]
+ 1017  46			ZERO:	INC	SI
+ 1018  D0 DB				RCR	BL,1	
+ 101A  E2 F1				LOOP	NEXT
+					;
+ 101C  CC				INT	3
+					;
+ 101D  0008[			DATA	DB	8	DUP(?)
+	   ??			
+			 ]	
+				
+					;
+ 1025				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	1025	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+BIN_N  . . . . . . . . . . . . .  	NUMBER	006E	
+
+COUNT  . . . . . . . . . . . . .  	NUMBER	0008	
+
+DATA . . . . . . . . . . . . . .  	L BYTE	101D	CODE	Length = 0008
+
+NEXT . . . . . . . . . . . . . .  	L NEAR	100D	CODE
+
+SEG_D  . . . . . . . . . . . . .  	NUMBER	0000	
+
+ZERO . . . . . . . . . . . . . .  	L NEAR	1017	CODE
+ZERO_ASC . . . . . . . . . . . .  	NUMBER	0030	
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  MASM_0		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     34 Source  Lines
+     34 Total   Lines
+     13 Symbols
+
+  46816 + 388476 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors

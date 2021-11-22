@@ -1,0 +1,38 @@
+;*****************************************
+;     MDA-Win8086 EXPERIMENT PROGRAM    *
+;     FILENAME  : INT3.ASM
+;     PROCESSOR : I8086
+;*****************************************
+CODE	SEGMENT
+	ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+	;
+V_TAB	EQU	21H*4
+SEG_D	EQU	0000H
+	;
+	ORG	1000H
+	MOV	AX,SEG_D
+	MOV	DS,AX
+	MOV	BX,V_TAB
+	MOV	AX,OFFSET INT_SER
+	MOV	WORD PTR [BX],AX
+	;
+	INC	BX
+	INC	BX
+	;
+	MOV	DX,0
+	MOV	WORD PTR [BX],DX
+	;
+	MOV	AX,1234H
+	MOV	BX,6789H
+	INT	21H
+	NOP
+	NOP
+	INT	3
+	;
+INT_SER: ADD	AX,BX
+	IRET
+	;		
+CODE	ENDS
+	END
+
+

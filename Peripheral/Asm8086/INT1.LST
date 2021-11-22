@@ -1,0 +1,49 @@
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Page     1-1
+
+
+				;*****************************************
+				;     MDA-Win8086 EXPERIMENT PROGRAM    *
+				;     FILENAME  : INT1.ASM
+				;     PROCESSOR : I8086
+				;*****************************************
+ 0000				CODE	SEGMENT
+					ASSUME	CS:CODE,DS:CODE,ES:CODE,SS:CODE
+					;
+ 1000					ORG	1000H
+ 1000  B8 1234				MOV	AX,1234H
+ 1003  B3 00				MOV	BL,00H
+ 1005  F6 F3				DIV	BL
+ 1007  90				NOP
+ 1008  90				NOP
+ 1009  CC				INT	3
+					;		
+ 100A				CODE	ENDS
+					END
+Microsoft (R) Macro Assembler Version 5.10                  6/3/9
+                                                             Symbols-1
+
+
+Segments and Groups:
+
+                N a m e         	Length	 Align	Combine Class
+
+CODE . . . . . . . . . . . . . .  	100A	PARA	NONE	
+
+Symbols:            
+
+                N a m e         	Type	 Value	 Attr
+
+@CPU . . . . . . . . . . . . . .  	TEXT  0101h		
+@FILENAME  . . . . . . . . . . .  	TEXT  INT1		
+@VERSION . . . . . . . . . . . .  	TEXT  510		
+
+
+     18 Source  Lines
+     18 Total   Lines
+      6 Symbols
+
+  46944 + 388348 Bytes symbol space free
+
+      0 Warning Errors
+      0 Severe  Errors
